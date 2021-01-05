@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="mb-3">
+    <label for="exampleFormControlTextarea1" class="form-label">Json </label>
+    <textarea class="form-control"  [(ngModel)]="jsonObj" id="exampleFormControlTextarea1" rows="6"></textarea>
+  </div>
+</div>
+<div class="form-row">
+  <div > 
+    <input style="float: right;margin-right: 9%;" type="submit" class="btn btn-primary" value="Render" (click)="getJsonObj()" />
+  </div>  
+</div>
+
+<div class="container" style="margin-top: 4%;" *ngIf="showForm">
+  <form [formGroup]="myFormGroup">
+    <div *ngFor="let form_elem of jsonList">
+      <div [ngSwitch]="form_elem.type">
+        <div *ngSwitchCase="'textBox'">
+          <div class="form-group">
+            <label for="email">{{form_elem?.label}}:</label>
+            <input type="text" class="form-control" [formControlName]="form_elem?.label" />
+          </div>
+        </div>
+        <div *ngSwitchCase="'checkbox'">
+          <div class="form-group">
+            <input class="form-check-input" type="checkbox" [formControlName]="form_elem?.label" />
+            <label class="form-check-label" for="flexCheckDefault" style="margin-left: 9px;">
+              {{form_elem?.label}}
+            </label>
+          </div>
+        </div>
+        <div *ngSwitchCase="'radio'">
+          <label class="form-check-label" for="{{form_elem?.label}}">
+            {{form_elem?.label}}
+          </label>
+          <div class="form-group" *ngFor="let opt of form_elem.options">
+            <input type="radio" name="{{form_elem?.label}}" id="{{opt?.label}}" value="{{opt?.label}}" [formControlName]="form_elem?.label" />
+            <label class="form-check-label" for="{{opt?.label}}" style="margin-left: 4px;">
+              {{opt?.label}}
+            </label>
+          </div>
+        </div>
+        <div *ngSwitchCase="'number'">
+          <div class="form-group">
+            <label for="email">{{form_elem?.label}}:</label>
+            <input type="number" class="form-control" [formControlName]="form_elem?.label" />
+          </div>
+        </div>
+        <div *ngSwitchCase="'select'">
+          <div class="form-group">
+            <label for="email">{{form_elem?.label}}:</label>
+            <select [formControlName]="form_elem?.label" class="form-control">
+              <option *ngFor="let opt of form_elem.options">
+                {{opt}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+
+        <div class="form-group margin-none"  style="margin: 2px;"> 
+          <div class="row">
+            <div class="col-md-2 pull-right">            
+              <input  *ngSwitchCase="'Submit-button'"value="{{form_elem?.label}}" (click)="save()" class="btn btn-primary" />  
+              <input *ngSwitchCase="'Cancel-button'" value="{{form_elem?.label}}" type="button"  class="btn btn-light" />            
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </form>
+</div>
+<router-outlet></router-outlet>
